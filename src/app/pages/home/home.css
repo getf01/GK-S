@@ -1,0 +1,170 @@
+/* ==========================================================================
+   CONFIGURACIÓN DEL CONTENEDOR PRINCIPAL
+   ========================================================================== */
+.gk-hero-card {
+    background: #0a0a0a;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 193, 7, 0.1);
+    position: relative;
+    height: 600px;
+    width: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+#gkCarousel, 
+.carousel-inner, 
+.carousel-item,
+.gk-content-wrapper {
+    height: 100%;
+    width: 100%;
+}
+
+.gk-content-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* --- CAPA DE IMAGEN / VIDEO (FONDO) --- */
+.gk-image-layer {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.gk-main-img {
+    max-height: 85%;
+    max-width: 90%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 30px rgba(255, 193, 7, 0.2));
+}
+
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.gk-main-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* --- BOTÓN DE MUTE (CENTRO INFERIOR SIEMPRE) --- */
+.mute-control {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 50px;
+    background: rgba(10, 10, 10, 0.75);
+    backdrop-filter: blur(10px);
+    border: 2px solid #ffc107;
+    color: #ffc107;
+    border-radius: 50%;
+    z-index: 110;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.mute-control:hover {
+    background: #ffc107;
+    color: black;
+    transform: translateX(-50%) scale(1.1);
+    box-shadow: 0 0 20px rgba(255, 193, 7, 0.4);
+}
+
+/* --- CAPA DE TEXTO (FRENTE) --- */
+.gk-text-layer {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 750px;
+    padding: 20px;
+    text-align: center;
+}
+
+.text-glass {
+    background: rgba(10, 10, 10, 0.6);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 3rem 2rem;
+    border-radius: 30px;
+    position: relative;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s ease-out;
+}
+
+.carousel-item.active .text-glass {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.btn-close-custom {
+    position: absolute;
+    top: 15px; right: 20px;
+    background: transparent;
+    border: none;
+    color: rgba(255,255,255,0.6);
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+/* --- TIPOGRAFÍA Y BOTONES --- */
+.gk-badge { color: #ffc107; letter-spacing: 3px; font-weight: 700; font-size: 0.9rem; display: block; margin-bottom: 10px; }
+.gk-title { color: white; font-size: 3.2rem; font-weight: 900; margin-bottom: 15px; }
+.gk-subtitle { color: rgba(255,255,255,0.8); font-size: 1.1rem; margin-bottom: 25px; }
+
+.gk-btn-futuristic {
+    background: #ffc107;
+    color: black;
+    border: none;
+    padding: 12px 35px;
+    font-weight: 800;
+    border-radius: 50px;
+    text-transform: uppercase;
+    box-shadow: 0 10px 20px rgba(255, 193, 7, 0.3);
+    transition: 0.3s;
+}
+
+.gk-btn-futuristic:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(255, 193, 7, 0.4); }
+
+/* --- ANIMACIONES --- */
+.floating { animation: floatAnim 6s ease-in-out infinite; }
+@keyframes floatAnim {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-20px) scale(1.02); }
+}
+
+/* --- MEDIA QUERIES (RESPONSIVE) --- */
+@media (max-width: 991px) {
+    .gk-hero-card { height: 500px; }
+    .gk-title { font-size: 2.5rem; }
+}
+
+@media (max-width: 768px) {
+    .gk-hero-card { height: 450px; }
+    .text-glass { padding: 2rem 1.5rem; width: 95%; margin: 0 auto; }
+    .gk-title { font-size: 2rem; }
+}
+
+@media (max-width: 576px) {
+    .gk-hero-card { height: 480px; }
+    .gk-main-img { max-height: 250px; }
+    .gk-title { font-size: 1.8rem; }
+    .mute-control { bottom: 25px; width: 42px; height: 42px; border-width: 1.5px; }
+}

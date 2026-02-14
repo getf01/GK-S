@@ -1,0 +1,69 @@
+<div class="container my-3 my-md-5">
+  <section class="gk-hero-card shadow-2xl overflow-hidden">
+    <div id="gkCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="9500">
+      <div class="carousel-inner">
+        @for (banner of banners; track banner.id; let isFirst = $first) {
+          <div class="carousel-item" [class.active]="isFirst">
+            <div class="gk-content-wrapper">
+              <div class="gk-image-layer">
+                @if (banner.type === 'video') {
+                  <div class="video-wrapper">
+                    <video
+                      #gkVideo
+                      [src]="banner.content"
+                      class="gk-main-video"
+                      loop
+                      playsinline
+                      [muted]="isMuted"
+                    ></video>
+
+                    <button class="mute-control" (click)="toggleMute($event)" type="button">
+                      <i
+                        class="bi"
+                        [class.bi-volume-mute-fill]="isMuted"
+                        [class.bi-volume-up-fill]="!isMuted"
+                      ></i>
+                    </button>
+                  </div>
+                } @else {
+                  <img [src]="banner.content" class="gk-main-img floating" [alt]="banner.title" />
+                }
+              </div>
+
+              @if (isFirst && anuncioVisible) {
+                <div class="gk-text-layer">
+                  <div class="text-glass">
+                    <button class="btn-close-custom" (click)="cerrarAnuncio($event)">
+                      <i class="bi bi-x-lg"></i>
+                    </button>
+                    <span class="gk-badge">NUEVO ARRIBO</span>
+                    <h1 class="gk-title">{{ banner.title }}</h1>
+                    <p class="gk-subtitle">{{ banner.description }}</p>
+                    <button class="gk-btn-futuristic">COMPRAR</button>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#gkCarousel"
+        data-bs-slide="prev"
+      >
+        <i class="bi bi-chevron-left fs-1 text-warning"></i>
+      </button>
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#gkCarousel"
+        data-bs-slide="next"
+      >
+        <i class="bi bi-chevron-right fs-1 text-warning"></i>
+      </button>
+    </div>
+  </section>
+</div>
