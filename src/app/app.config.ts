@@ -1,29 +1,25 @@
-import { ApplicationConfig } from '@angular/core';
+import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
-
-// Importaciones de Firebase
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { provideStorage, getStorage } from '@angular/fire/storage';
-import { provideAuth, getAuth } from '@angular/fire/auth'; // Para el Login de Admin
 
 const firebaseConfig = {
-  apiKey: "AIzaSyACsR0FdyL7KCjkJzK4cMdB00f859JTUfs",
-  authDomain: "coffee-spark-ai-barista-ef23d.firebaseapp.com",
-  projectId: "coffee-spark-ai-barista-ef23d",
-  storageBucket: "coffee-spark-ai-barista-ef23d.firebasestorage.app",
-  messagingSenderId: "904194597488",
-  appId: "1:904194597488:web:78bac86d74cf56bc318ab5"
+  apiKey: "AIzaSyA016Jz6iMRWbc08sDwasAeU2u1AcPS-8s",
+  authDomain: "venta-7d426.firebaseapp.com",
+  projectId: "venta-7d426",
+  storageBucket: "venta-7d426.firebasestorage.app",
+  messagingSenderId: "652484638213",
+  appId: "1:652484638213:web:2d5e566ff076fbd5880e6c"
 };
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    // Inicialización de los servicios
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideFirestore(() => getFirestore()),
-    provideStorage(() => getStorage()),
-    provideAuth(() => getAuth())
+    provideStorage(() => getStorage())
   ]
 };
