@@ -43,10 +43,10 @@
   </section>
 
   <div class="category-section">
-    <div class="section-header">
+    <div class="section-header text-center">
       <h2 class="gk-title-sm">Nuestras Categorías</h2>
       <button class="btn btn-sm btn-outline-warning mb-2" (click)="seleccionarCategoria(null)">Ver Todo</button>
-      <div class="gk-underline"></div>
+      <div class="gk-underline mx-auto"></div>
     </div>
 
     <div class="row row-cols-2 row-cols-md-4 row-cols-lg-5 g-4 justify-content-center">
@@ -58,6 +58,11 @@
             </div>
             <span class="cat-name">{{ cat.nombre }}</span>
           </div>
+        </div>
+      } @empty {
+        <div class="col-12 text-center py-4">
+          <div class="spinner-border text-warning spinner-border-sm" role="status"></div>
+          <p class="text-muted small mt-2">Cargando categorías...</p>
         </div>
       }
     </div>

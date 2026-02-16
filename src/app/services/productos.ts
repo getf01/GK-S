@@ -1,6 +1,6 @@
 import { Injectable, inject, NgZone, signal } from '@angular/core';
 import { 
-  Firestore, collection, addDoc, query, where, onSnapshot 
+  Firestore, collection, addDoc, query, where, onSnapshot, doc, updateDoc, deleteDoc 
 } from '@angular/fire/firestore';
 import { Storage, ref, uploadBytes, getDownloadURL } from '@angular/fire/storage';
 import { Observable } from 'rxjs';
@@ -12,35 +12,36 @@ export class ProductosService {
   private storage = inject(Storage);
   private zone = inject(NgZone);
 
-  // Signal GLOBAL para saber qué categoría filtrar
   categoriaSeleccionada = signal<string | null>(null);
 
   getProductos(): Observable<Producto[]> {
     return new Observable(subscriber => {
       const q = query(collection(this.firestore, 'productos'));
       const unsubscribe = onSnapshot(q, (snapshot) => {
-        const productos = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        })) as Producto[];
-        subscriber.next(productos);
+        this.zone.run(() => {
+          const productos = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+          })) as Producto[];
+          subscriber.next(productos);
+        });
       }, (error) => subscriber.error(error));
       return () => unsubscribe();
     });
   }
 
+  // ... (Tus otros métodos getProductosPorCategoria y getCategorias están perfectos)
+  
   getProductosPorCategoria(nombreCat: string): Observable<Producto[]> {
     return new Observable(subscriber => {
-      const q = query(
-        collection(this.firestore, 'productos'), 
-        where('categoria', '==', nombreCat)
-      );
+      const q = query(collection(this.firestore, 'productos'), where('categoria', '==', nombreCat));
       const unsubscribe = onSnapshot(q, (snapshot) => {
-        const productos = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        })) as Producto[];
-        subscriber.next(productos);
+        this.zone.run(() => {
+          const productos = snapshot.docs.map(doc => ({
+            id: doc.id, ...doc.data()
+          })) as Producto[];
+          subscriber.next(productos);
+        });
       }, (error) => subscriber.error(error));
       return () => unsubscribe();
     });
@@ -50,11 +51,12 @@ export class ProductosService {
     return new Observable(subscriber => {
       const q = query(collection(this.firestore, 'categorias'));
       const unsubscribe = onSnapshot(q, (snapshot) => {
-        const categorias = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
-        subscriber.next(categorias);
+        this.zone.run(() => {
+          const categorias = snapshot.docs.map(doc => ({
+            id: doc.id, ...doc.data()
+          }));
+          subscriber.next(categorias);
+        });
       }, (error) => subscriber.error(error));
       return () => unsubscribe();
     });
@@ -68,12 +70,22 @@ export class ProductosService {
   }
 
   addProducto(producto: Producto) {
-    const productosRef = collection(this.firestore, 'productos');
-    return addDoc(productosRef, producto);
+    return addDoc(collection(this.firestore, 'productos'), producto);
   }
 
   addCategoria(nombre: string) {
-    const catRef = collection(this.firestore, 'categorias');
-    return addDoc(catRef, { nombre: nombre });
+    return addDoc(collection(this.firestore, 'categorias'), { nombre });
+  }
+
+  updateProducto(id: string, data: Partial<Producto>) {
+    return updateDoc(doc(this.firestore, `productos/${id}`), data);
+  }
+
+  deleteProducto(id: string) {
+    return deleteDoc(doc(this.firestore, `productos/${id}`));
+  }
+
+  deleteCategoria(id: string) {
+    return deleteDoc(doc(this.firestore, `categorias/${id}`));
   }
 }
