@@ -1,28 +1,24 @@
 <div class="container my-3 my-md-5">
   <section class="gk-hero-card shadow-2xl overflow-hidden">
     <div id="gkCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="9500">
+      
+      <div class="carousel-indicators">
+        @for (banner of banners; track banner.id; let i = $index) {
+          <button type="button" data-bs-target="#gkCarousel" [attr.data-bs-slide-to]="i" [class.active]="i === 0"></button>
+        }
+      </div>
+
       <div class="carousel-inner">
         @for (banner of banners; track banner.id; let isFirst = $first) {
           <div class="carousel-item" [class.active]="isFirst">
             <div class="gk-content-wrapper">
+              
               <div class="gk-image-layer">
                 @if (banner.type === 'video') {
                   <div class="video-wrapper">
-                    <video
-                      #gkVideo
-                      [src]="banner.content"
-                      class="gk-main-video"
-                      loop
-                      playsinline
-                      [muted]="isMuted"
-                    ></video>
-
+                    <video #gkVideo [src]="banner.content" class="gk-main-video" loop playsinline [muted]="isMuted"></video>
                     <button class="mute-control" (click)="toggleMute($event)" type="button">
-                      <i
-                        class="bi"
-                        [class.bi-volume-mute-fill]="isMuted"
-                        [class.bi-volume-up-fill]="!isMuted"
-                      ></i>
+                      <i #muteIcon class="bi bi-volume-mute-fill"></i>
                     </button>
                   </div>
                 } @else {
@@ -31,7 +27,7 @@
               </div>
 
               @if (isFirst && anuncioVisible) {
-                <div class="gk-text-layer">
+                <div #anuncioLayer class="gk-text-layer">
                   <div class="text-glass">
                     <button class="btn-close-custom" (click)="cerrarAnuncio($event)">
                       <i class="bi bi-x-lg"></i>
@@ -43,27 +39,39 @@
                   </div>
                 </div>
               }
+
             </div>
           </div>
         }
       </div>
 
-      <button
-        class="carousel-control-prev"
-        type="button"
-        data-bs-target="#gkCarousel"
-        data-bs-slide="prev"
-      >
+      <button class="carousel-control-prev" type="button" data-bs-target="#gkCarousel" data-bs-slide="prev">
         <i class="bi bi-chevron-left fs-1 text-warning"></i>
       </button>
-      <button
-        class="carousel-control-next"
-        type="button"
-        data-bs-target="#gkCarousel"
-        data-bs-slide="next"
-      >
+      <button class="carousel-control-next" type="button" data-bs-target="#gkCarousel" data-bs-slide="next">
         <i class="bi bi-chevron-right fs-1 text-warning"></i>
       </button>
+
     </div>
   </section>
+
+  <div class="category-section">
+    <div class="section-header">
+      <h2 class="gk-title-sm">Nuestras Categorías</h2>
+      <div class="gk-underline"></div>
+    </div>
+
+    <div class="row row-cols-2 row-cols-md-4 row-cols-lg-5 g-4 justify-content-center">
+      @for (cat of listaCategorias(); track cat.id) {
+        <div class="col">
+          <div class="cat-card" [routerLink]="['/categoria', cat.nombre]">
+            <div class="cat-icon">
+              <i class="bi bi-controller"></i>
+            </div>
+            <span class="cat-name">{{ cat.nombre }}</span>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
 </div>

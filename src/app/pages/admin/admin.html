@@ -1,23 +1,42 @@
-<div class="container mt-5">
+<div class="container mt-5 mb-5">
+  <div class="card shadow border-0 mx-auto mb-4" style="max-width: 600px;">
+    <div class="card-header bg-primary text-white py-3">
+      <h6 class="mb-0"><i class="bi bi-tags me-2"></i>Nueva Categoría (Netflix, Disney, etc.)</h6>
+    </div>
+    <div class="card-body">
+  <div class="input-group">
+    <input type="text" #catInput 
+           class="form-control" 
+           placeholder="Nombre de la categoría (ej. Netflix)"
+           (keyup.enter)="procesarCategoria(catInput)">
+    
+    <button class="btn btn-primary" 
+            type="button"
+            (click)="procesarCategoria(catInput)">
+      Crear
+    </button>
+  </div>
+</div>
+  </div>
+
   <div class="card shadow border-0 mx-auto" style="max-width: 600px;">
     <div class="card-header bg-dark text-white text-center py-3">
       <h5 class="mb-0"><i class="bi bi-shop me-2"></i>Panel de Inventario</h5>
     </div>
     <div class="card-body p-4">
-      
       <div class="row">
         <div class="col-12 mb-3">
           <label class="form-label fw-bold">Nombre del Producto</label>
-          <input type="text" class="form-control" [(ngModel)]="nuevoProducto.nombre" placeholder="Ej. Café Altomayo">
+          <input type="text" class="form-control" [(ngModel)]="nuevoProducto.nombre" placeholder="Ej. Pantalla Netflix 1 Mes">
         </div>
 
         <div class="col-md-6 mb-3">
           <label class="form-label fw-bold">Categoría</label>
           <select class="form-select" [(ngModel)]="nuevoProducto.categoria">
             <option value="">Selecciona...</option>
-            <option value="bebidas">Bebidas</option>
-            <option value="comida">Comida</option>
-            <option value="postres">Postres</option>
+            @for (cat of listaCategorias(); track cat.id) {
+              <option [value]="cat.nombre">{{ cat.nombre }}</option>
+            }
           </select>
         </div>
 
@@ -41,15 +60,10 @@
         <small><i class="bi bi-file-earmark-image"></i> Listo para subir: {{ archivoSeleccionado.name }}</small>
       </div>
 
-      <button class="btn btn-primary w-100 fw-bold mt-2" 
-              (click)="guardar()" 
-              [disabled]="cargando()">
-        <span *ngIf="!cargando()">
-          <i class="bi bi-cloud-arrow-up me-2"></i>Publicar Producto
-        </span>
+      <button class="btn btn-primary w-100 fw-bold mt-2" (click)="guardar()" [disabled]="cargando()">
+        <span *ngIf="!cargando()"><i class="bi bi-cloud-arrow-up me-2"></i>Publicar Producto</span>
         <span *ngIf="cargando()" class="spinner-border spinner-border-sm"></span>
       </button>
-      
     </div>
   </div>
 </div>

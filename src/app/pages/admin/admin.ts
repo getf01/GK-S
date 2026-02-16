@@ -1,9 +1,11 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ProductosService } from '../../services/productos'; // Ajusta si el nombre es diferente
+import { ProductosService } from '../../services/productos';
 import { Producto } from '../../interfaces/producto.interface';
-
+import { toSignal } from '@angular/core/rxjs-interop';
+import { catchError, of } from 'rxjs'; // Añade estos a los imports de rxjs
+import { map } from 'rxjs/operators'; // Asegúrate de importar map también
 @Component({
   selector: 'app-admin',
   standalone: true,
@@ -13,9 +15,19 @@ import { Producto } from '../../interfaces/producto.interface';
 })
 export class AdminComponent {
   private _productosService = inject(ProductosService);
-  
+  private injector = inject(Injector); // Inyectamos el injector
+
   cargando = signal(false);
   archivoSeleccionado: File | null = null;
+  
+  // Traemos las categorías de Firebase para el select
+  listaCategorias = toSignal(
+  this._productosService.getCategorias().pipe(
+    map(res => res || []), // Si viene nulo, pone array vacío
+    catchError(() => of([])) // Si hay error de Firebase, no rompe la app
+  ), 
+  { initialValue: [] }
+);
 
   nuevoProducto: Producto = {
     nombre: '',
@@ -25,44 +37,50 @@ export class AdminComponent {
     stock: 0
   };
 
-  // Capturar el archivo cuando el usuario lo elige
   onFileSelected(event: any) {
     const file = event.target.files[0];
-    if (file) {
-      this.archivoSeleccionado = file;
-    }
+    if (file) { this.archivoSeleccionado = file; }
   }
 
+  // Cambiamos el nombre para evitar conflictos y pasamos el elemento completo
+procesarCategoria(input: HTMLInputElement) {
+  const nombre = input.value.trim();
+  if (!nombre) return;
+
+  // 1. Verificamos si ya existe en la lista que ya tenemos cargada (listaCategorias)
+  const existe = this.listaCategorias().some(
+    (c: any) => c.nombre.toLowerCase() === nombre.toLowerCase()
+  );
+
+  if (existe) {
+    alert('❌ Esta categoría ya existe.');
+    return;
+  }
+
+  this._productosService.addCategoria(nombre)
+    .then(() => {
+      alert('✅ Categoría creada');
+      input.value = '';
+    });
+}
+
   async guardar() {
-    // Validación: Ahora la imagen es obligatoria como archivo
     if (!this.nuevoProducto.nombre || this.nuevoProducto.precio <= 0 || !this.nuevoProducto.categoria || !this.archivoSeleccionado) {
-      alert('Por favor, completa todos los campos y selecciona una imagen.');
+      alert('Por favor, completa todos los campos.');
       return;
     }
 
     this.cargando.set(true);
-    
     try {
-      // 1. Subir la imagen primero y obtener la URL
       const urlImagen = await this._productosService.subirImagen(this.archivoSeleccionado);
-      
-      // 2. Asignar la URL al objeto producto
       this.nuevoProducto.imagen = urlImagen;
-
-      // 3. Guardar todo en Firestore
       await this._productosService.addProducto(this.nuevoProducto);
       
-      alert('✅ ¡Producto y Foto publicados con éxito!');
-      
-      // 4. Resetear formulario
-      this.nuevoProducto = { 
-        nombre: '', precio: 0, categoria: '', imagen: '', stock: 0 
-      };
+      alert('✅ ¡Publicado con éxito!');
+      this.nuevoProducto = { nombre: '', precio: 0, categoria: '', imagen: '', stock: 0 };
       this.archivoSeleccionado = null;
-      
     } catch (error) {
-      console.error('Error en el proceso:', error);
-      alert('❌ Error al subir el producto');
+      alert('❌ Error al subir');
     } finally {
       this.cargando.set(false);
     }
