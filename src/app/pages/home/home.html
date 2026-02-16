@@ -1,18 +1,15 @@
 <div class="container my-3 my-md-5">
   <section class="gk-hero-card shadow-2xl overflow-hidden">
     <div id="gkCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="9500">
-      
       <div class="carousel-indicators">
         @for (banner of banners; track banner.id; let i = $index) {
           <button type="button" data-bs-target="#gkCarousel" [attr.data-bs-slide-to]="i" [class.active]="i === 0"></button>
         }
       </div>
-
       <div class="carousel-inner">
         @for (banner of banners; track banner.id; let isFirst = $first) {
           <div class="carousel-item" [class.active]="isFirst">
             <div class="gk-content-wrapper">
-              
               <div class="gk-image-layer">
                 @if (banner.type === 'video') {
                   <div class="video-wrapper">
@@ -25,7 +22,6 @@
                   <img [src]="banner.content" class="gk-main-img floating" [alt]="banner.title" />
                 }
               </div>
-
               @if (isFirst && anuncioVisible) {
                 <div #anuncioLayer class="gk-text-layer">
                   <div class="text-glass">
@@ -39,32 +35,24 @@
                   </div>
                 </div>
               }
-
             </div>
           </div>
         }
       </div>
-
-      <button class="carousel-control-prev" type="button" data-bs-target="#gkCarousel" data-bs-slide="prev">
-        <i class="bi bi-chevron-left fs-1 text-warning"></i>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#gkCarousel" data-bs-slide="next">
-        <i class="bi bi-chevron-right fs-1 text-warning"></i>
-      </button>
-
     </div>
   </section>
 
   <div class="category-section">
     <div class="section-header">
       <h2 class="gk-title-sm">Nuestras Categorías</h2>
+      <button class="btn btn-sm btn-outline-warning mb-2" (click)="seleccionarCategoria(null)">Ver Todo</button>
       <div class="gk-underline"></div>
     </div>
 
     <div class="row row-cols-2 row-cols-md-4 row-cols-lg-5 g-4 justify-content-center">
       @for (cat of listaCategorias(); track cat.id) {
         <div class="col">
-          <div class="cat-card" [routerLink]="['/categoria', cat.nombre]">
+          <div class="cat-card" (click)="seleccionarCategoria(cat.nombre)" style="cursor: pointer;">
             <div class="cat-icon">
               <i class="bi bi-controller"></i>
             </div>

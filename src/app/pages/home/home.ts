@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ProductosService } from '../../services/productos';
 import { toSignal } from '@angular/core/rxjs-interop';
-
+import { Router } from '@angular/router'; // Importa el Router
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -14,7 +14,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 export class Home implements AfterViewInit {
   private _productosService = inject(ProductosService);
   private cdr = inject(ChangeDetectorRef);
-  
+  private router = inject(Router); // Inyecta el router
   @ViewChild('muteIcon') muteIconElement!: ElementRef<HTMLElement>;
   @ViewChild('gkVideo') videoElement!: ElementRef<HTMLVideoElement>;
   @ViewChild('anuncioLayer') anuncioLayer!: ElementRef<HTMLElement>;
@@ -24,7 +24,7 @@ export class Home implements AfterViewInit {
   listaCategorias = toSignal(this._productosService.getCategorias(), { initialValue: [] });
 
   banners = [
-    { id: 1, type: 'image', content: 'logo.jpg', title: 'GK-HUB GAMING', description: '¡Bienvenido! Descubre las cuentas Streaming y ofertas exclusivas.' },
+    { id: 1, type: 'image', content: 'logo.jpg', title: 'GK-HUB GAMING', description: '¡Bienvenido! Descubre las ofertas exclusivas.' },
     { id: 2, type: 'video', content: 'video.mp4', title: '', description: '' },
     { id: 3, type: 'image', content: 'naruto.jpg', title: '', description: '' },
     { id: 4, type: 'image', content: 'loki.jpg', title: '', description: '' },
@@ -32,6 +32,16 @@ export class Home implements AfterViewInit {
     { id: 6, type: 'image', content: 'simp.jpg', title: '', description: '' },
     { id: 7, type: 'image', content: 'strang.jpg', title: '', description: '' }
   ];
+
+  seleccionarCategoria(nombre: string | null) {
+  if (nombre) {
+    // Esto cambia la URL a /categoria/Musica por ejemplo
+    this.router.navigate(['/categoria', nombre]);
+  } else {
+    // Si es "Ver todo", podrías mandarlo a una lista general o al home
+    this._productosService.categoriaSeleccionada.set(null);
+  }
+}
 
   ngAfterViewInit() {
     const carousel = document.getElementById('gkCarousel');
@@ -49,7 +59,6 @@ export class Home implements AfterViewInit {
     if (this.videoElement && this.muteIconElement) {
       this.isMuted = !this.isMuted;
       this.videoElement.nativeElement.muted = this.isMuted;
-      
       const icon = this.muteIconElement.nativeElement;
       icon.className = this.isMuted ? 'bi bi-volume-mute-fill' : 'bi bi-volume-up-fill';
       this.cdr.detectChanges();

@@ -1,7 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductosService } from '../../services/productos';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { ActivatedRoute } from '@angular/router'; // IMPORTANTE
 
 @Component({
   selector: 'app-productos',
@@ -12,7 +13,25 @@ import { toSignal } from '@angular/core/rxjs-interop';
 })
 export class ProductosComponent {
   private _productosService = inject(ProductosService);
+  private route = inject(ActivatedRoute); // Inyectamos la ruta activa
   
-  // Convertimos el observable a Signal para que Angular maneje la detección de cambios eficientemente
-  public productos = toSignal(this._productosService.getProductos(), { initialValue: [] });
+  // Capturamos el parámetro 'nombreCat' de la URL
+  private parametroUrl = toSignal(this.route.params);
+
+  private todosLosProductos = toSignal(this._productosService.getProductos(), { initialValue: [] });
+
+  public productos = computed(() => {
+    const lista = this.todosLosProductos();
+    
+    // Prioridad 1: Lo que diga la URL (categoria/:nombreCat)
+    // Prioridad 2: Lo que diga el Signal global
+    const nombreDesdeUrl = this.parametroUrl()?.['nombreCat'];
+    const filtro = nombreDesdeUrl || this._productosService.categoriaSeleccionada();
+
+    if (!filtro) return lista;
+
+    return lista.filter(p => 
+      p.categoria.toLowerCase().trim() === filtro.toLowerCase().trim()
+    );
+  });
 }

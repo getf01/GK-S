@@ -1,4 +1,4 @@
-import { Injectable, inject, NgZone } from '@angular/core';
+import { Injectable, inject, NgZone, signal } from '@angular/core';
 import { 
   Firestore, collection, addDoc, query, where, onSnapshot 
 } from '@angular/fire/firestore';
@@ -12,7 +12,9 @@ export class ProductosService {
   private storage = inject(Storage);
   private zone = inject(NgZone);
 
-  // --- OBTENER TODOS LOS PRODUCTOS ---
+  // Signal GLOBAL para saber qué categoría filtrar
+  categoriaSeleccionada = signal<string | null>(null);
+
   getProductos(): Observable<Producto[]> {
     return new Observable(subscriber => {
       const q = query(collection(this.firestore, 'productos'));
@@ -27,15 +29,12 @@ export class ProductosService {
     });
   }
 
-  // --- FILTRAR POR CATEGORÍA (Corregido para evitar el error _Query) ---
   getProductosPorCategoria(nombreCat: string): Observable<Producto[]> {
     return new Observable(subscriber => {
-      // Creamos la consulta nativa
       const q = query(
         collection(this.firestore, 'productos'), 
         where('categoria', '==', nombreCat)
       );
-
       const unsubscribe = onSnapshot(q, (snapshot) => {
         const productos = snapshot.docs.map(doc => ({
           id: doc.id,
@@ -43,12 +42,10 @@ export class ProductosService {
         })) as Producto[];
         subscriber.next(productos);
       }, (error) => subscriber.error(error));
-
       return () => unsubscribe();
     });
   }
 
-  // --- CATEGORÍAS (Ya estaba funcionando) ---
   getCategorias(): Observable<any[]> {
     return new Observable(subscriber => {
       const q = query(collection(this.firestore, 'categorias'));
@@ -63,7 +60,6 @@ export class ProductosService {
     });
   }
 
-  // --- ESCRITURA Y STORAGE ---
   async subirImagen(file: File): Promise<string> {
     const filePath = `productos/${Date.now()}_${file.name}`;
     const fileRef = ref(this.storage, filePath);
