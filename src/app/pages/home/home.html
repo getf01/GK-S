@@ -22,16 +22,17 @@
                   <img [src]="banner.content" class="gk-main-img floating" [alt]="banner.title" />
                 }
               </div>
+              
               @if (isFirst && anuncioVisible) {
                 <div #anuncioLayer class="gk-text-layer">
-                  <div class="text-glass">
+                  <div class="text-glass-tech">
                     <button class="btn-close-custom" (click)="cerrarAnuncio($event)">
                       <i class="bi bi-x-lg"></i>
                     </button>
-                    <span class="gk-badge">NUEVO ARRIBO</span>
-                    <h1 class="gk-title">{{ banner.title }}</h1>
-                    <p class="gk-subtitle">{{ banner.description }}</p>
-                    <button class="gk-btn-futuristic">COMPRAR</button>
+                    <span class="gk-badge-gold">NUEVA TRANSMISIÓN</span>
+                    <h1 class="gk-title-display">{{ banner.title }}</h1>
+                    <p class="gk-subtitle-light">{{ banner.description }}</p>
+                    <button class="gk-btn-futuristic">COMPRAR AHORA</button>
                   </div>
                 </div>
               }
@@ -42,27 +43,32 @@
     </div>
   </section>
 
-  <div class="category-section">
-    <div class="section-header text-center">
-      <h2 class="gk-title-sm">Nuestras Categorías</h2>
-      <button class="btn btn-sm btn-outline-warning mb-2" (click)="seleccionarCategoria(null)">Ver Todo</button>
-      <div class="gk-underline mx-auto"></div>
+  <div class="category-section py-5">
+    <div class="section-header text-center mb-5">
+      <h2 class="title-modern-dark">Nuestras Colecciones</h2>
+      <button class="btn-reset-tech" (click)="seleccionarCategoria(null)">
+        <i class="bi bi-grid-fill me-2"></i>Ver Todo
+      </button>
+      <div class="gk-line-glow mx-auto mt-3"></div>
     </div>
 
     <div class="row row-cols-2 row-cols-md-4 row-cols-lg-5 g-4 justify-content-center">
       @for (cat of listaCategorias(); track cat.id) {
         <div class="col">
-          <div class="cat-card" (click)="seleccionarCategoria(cat.nombre)" style="cursor: pointer;">
-            <div class="cat-icon">
-              <i class="bi bi-controller"></i>
+          <div class="cat-card-modern" (click)="seleccionarCategoria(cat.nombre)">
+            <div class="icon-wrapper-tech">
+              <i class="bi bi-grid-1x2"></i> 
+              <div class="orbit-anim"></div>
             </div>
-            <span class="cat-name">{{ cat.nombre }}</span>
+            <span class="cat-id-tag">SYS_NODE</span>
+            <h3 class="cat-name-modern">{{ cat.nombre }}</h3>
+            <div class="hover-indicator-gold"></div>
           </div>
         </div>
       } @empty {
         <div class="col-12 text-center py-4">
-          <div class="spinner-border text-warning spinner-border-sm" role="status"></div>
-          <p class="text-muted small mt-2">Cargando categorías...</p>
+          <div class="spinner-border text-warning" role="status"></div>
+          <p class="text-muted small mt-2">Sincronizando categorías...</p>
         </div>
       }
     </div>

@@ -6,4 +6,5 @@ export interface Producto {
   categoria: string;
   imagen: string;    
   stock: number;
+  descripcion?: string; // Campo opcional para no romper lo anterior
 }

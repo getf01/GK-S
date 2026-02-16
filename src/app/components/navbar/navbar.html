@@ -1,31 +1,47 @@
-<nav class="navbar navbar-dark bg-dark shadow py-2">
-  <div class="container d-flex align-items-center flex-nowrap">
+<nav class="navbar navbar-expand shadow-2xl sticky-top">
+  <div class="container d-flex align-items-center justify-content-between">
     
-    <a class="navbar-brand fw-bold me-md-4 me-2" routerLink="/home" style="font-size: 1.4rem; white-space: nowrap;">
-      <span>GK-HUB</span>
-    </a>
+    <a class="navbar-brand fw-bold" routerLink="/home">GK-HUB</a>
 
-    <form class="flex-grow-1 mx-lg-5 mx-2" style="max-width: 700px;" role="search">
-      <div class="input-group">
-        <input class="form-control bg-secondary text-white border-0" type="search" placeholder="¿Qué buscas?" aria-label="Search">
-        <button class="btn btn-warning" type="submit">
-          <i class="bi bi-search"></i>
-        </button>
+    <div class="flex-grow-1 mx-2 mx-md-4" style="max-width: 500px;">
+  <div class="input-group input-group-sm tech-search-group">
+    <input 
+      #searchInput
+      class="form-control search-input" 
+      type="text" 
+      placeholder="Buscar productos..."
+      (keyup.enter)="ejecutarBusqueda(searchInput.value)">
+    
+    <button 
+      class="btn btn-warning search-btn" 
+      type="button" 
+      (click)="ejecutarBusqueda(searchInput.value)">
+      <i class="bi bi-search"></i>
+    </button>
+  </div>
+</div>
+
+    <div class="d-flex align-items-center gap-2 gap-md-3">
+      <a class="nav-icon-link" routerLink="/home" title="Inicio"><i class="bi bi-house-door"></i></a>
+      <a class="nav-text-link d-none d-md-block" routerLink="/productos">Productos</a>
+
+      <div class="auth-section">
+        @if (!authService.usuario()) {
+          <a class="btn btn-sm btn-outline-warning btn-glow" routerLink="/login">
+            <i class="bi bi-person-circle"></i> <span class="d-none d-sm-inline">Ingresar</span>
+          </a>
+        } @else {
+          <div class="d-flex gap-2">
+            <a class="btn btn-sm btn-warning" routerLink="/admin" title="Admin">
+              <i class="bi bi-shield-lock"></i>
+            </a>
+            <button class="btn btn-sm btn-danger" (click)="salir()">
+              <i class="bi bi-box-arrow-right"></i>
+            </button>
+          </div>
+        }
       </div>
-    </form>
-
-    <ul class="nav flex-nowrap align-items-center ms-md-4 ms-1">
-      <li class="nav-item">
-        <a class="nav-link text-white px-2" routerLink="/home"><i class="bi bi-house-door fs-5"></i></a>
-      </li>
-      <li class="nav-item d-none d-md-flex"> 
-        <a class="btn btn-sm btn-outline-light px-3 ms-2" routerLink="/productos">Productos</a>
-        <a class="btn btn-sm btn-outline-warning px-3 ms-2" href="#">Vender</a>
-      </li>
-      <li class="nav-item d-block d-md-none ms-1">
-        <a class="btn btn-sm btn-outline-warning" routerLink="/productos"><i class="bi bi-bag"></i></a>
-      </li>
-    </ul>
+    </div>
 
   </div>
 </nav>

@@ -1,11 +1,12 @@
-/* --- CONTENEDOR HERO --- */
+/* --- HERO Y CONTENEDOR --- */
 .gk-hero-card {
     background: #0a0a0a;
-    border-radius: 24px;
-    border: 1px solid rgba(255, 193, 7, 0.1);
+    border-radius: 30px;
+    border: 1px solid rgba(255, 193, 7, 0.15);
     height: 600px;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
 }
 
 #gkCarousel, .carousel-inner, .carousel-item, .gk-content-wrapper { height: 100%; width: 100%; }
@@ -17,7 +18,7 @@
     justify-content: center;
 }
 
-/* --- MEDIA (FONDO) --- */
+/* --- FONDO / IMAGEN / VIDEO --- */
 .gk-image-layer {
     position: absolute;
     inset: 0;
@@ -37,7 +38,6 @@
 .video-wrapper { position: relative; width: 100%; height: 100%; z-index: 5; }
 .gk-main-video { width: 100%; height: 100%; object-fit: cover; }
 
-/* --- CONTROLES MUTE --- */
 .mute-control {
     position: absolute;
     bottom: 30px;
@@ -45,20 +45,19 @@
     transform: translateX(-50%);
     width: 50px;
     height: 50px;
-    background: rgba(10, 10, 10, 0.75);
+    background: rgba(10, 10, 10, 0.85);
     backdrop-filter: blur(10px);
     border: 2px solid #ffc107;
     color: #ffc107;
     border-radius: 50%;
-    z-index: 999;
+    z-index: 2000;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    pointer-events: all;
 }
 
-/* --- TEXTO Y ANUNCIO --- */
+/* --- ANUNCIO (FIX CONTRASTE) --- */
 .gk-text-layer {
     position: relative;
     z-index: 1000;
@@ -66,90 +65,123 @@
     max-width: 750px;
     padding: 20px;
     text-align: center;
-    pointer-events: none; /* Permite clicks a través hacia los controles del carrusel si es necesario */
 }
 
-.text-glass {
-    background: rgba(10, 10, 10, 0.6);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 3rem 2rem;
-    border-radius: 30px;
-    pointer-events: all;
+.text-glass-tech {
+    background: rgba(10, 10, 10, 0.75); /* Fondo oscuro para que el texto blanco se vea sí o sí */
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 193, 7, 0.3);
+    padding: 3.5rem 2.5rem;
+    border-radius: 40px;
     opacity: 0;
-    transform: translateY(20px);
-    transition: 0.8s ease-out;
+    transform: translateY(30px);
+    transition: 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5);
 }
 
-.carousel-item.active .text-glass { opacity: 1; transform: translateY(0); }
+.carousel-item.active .text-glass-tech { opacity: 1; transform: translateY(0); }
 
-.btn-close-custom {
-    position: absolute;
-    top: 20px; right: 20px;
-    z-index: 2000;
-    width: 40px; height: 40px;
-    background: rgba(255,255,255,0.1);
-    border: none;
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-
-.btn-close-custom:hover { background: #ffc107; color: black; }
-
-.gk-title { color: white; font-size: 3.2rem; font-weight: 900; }
-.gk-badge { color: #ffc107; letter-spacing: 3px; font-weight: 700; }
+.gk-title-display { color: #ffffff !important; font-size: 3.5rem; font-weight: 900; line-height: 1.1; margin: 15px 0; }
+.gk-subtitle-light { color: rgba(255, 255, 255, 0.8) !important; font-size: 1.2rem; font-weight: 400; }
+.gk-badge-gold { color: #ffc107; letter-spacing: 4px; font-weight: 800; font-size: 0.8rem; text-shadow: 0 0 10px rgba(255, 193, 7, 0.5); }
 
 .gk-btn-futuristic {
     background: #ffc107;
-    color: black;
-    padding: 12px 35px;
-    font-weight: 800;
-    border-radius: 50px;
+    color: #000;
+    padding: 14px 40px;
+    font-weight: 900;
+    border-radius: 15px;
     border: none;
+    margin-top: 20px;
+    transition: 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-close-custom {
+    position: absolute; top: 20px; right: 20px;
+    background: rgba(255,255,255,0.1); border: none; color: white;
+    width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+}
+
+/* --- CATEGORÍAS (MODERNO PARA FONDO BLANCO) --- */
+.category-section { margin-top: 5rem; }
+
+.gk-line-glow { height: 4px; width: 60px; background: #ffc107; border-radius: 10px; box-shadow: 0 0 10px #ffc107; }
+
+.btn-reset-tech {
+    background: white;
+    border: 1px solid #ddd;
+    color: #555;
+    padding: 6px 20px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.8rem;
     transition: 0.3s;
 }
 
-/* --- CATEGORÍAS --- */
-.category-section { margin-top: 4rem; text-align: center; }
-.gk-underline { height: 4px; width: 50px; background: #ffc107; margin: 10px auto; }
+.btn-reset-tech:hover { background: #ffc107; color: #000; border-color: #ffc107; }
 
-.cat-card {
+
+.cat-card-modern {
     background: white;
-    border-radius: 24px;
-    padding: 2rem 1rem;
-    transition: 0.4s;
-    border: 1px solid rgba(0,0,0,0.05);
+    border-radius: 28px;
+    padding: 2.5rem 1rem;
+    text-align: center;
+    border: 1px solid rgba(0,0,0,0.04);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+    transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
     cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    height: 100%;
 }
 
-.cat-card:hover { transform: translateY(-12px); border-color: #ffc107; box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
+.cat-card-modern:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 25px 50px rgba(255, 193, 7, 0.15);
+    border-color: rgba(255, 193, 7, 0.5);
+}
 
-.cat-icon {
-    width: 65px; height: 65px;
-    background: #fff9e6;
+.icon-wrapper-tech {
+    width: 70px; height: 70px;
+    background: #fdfdfd;
     color: #ffc107;
-    border-radius: 50%;
-    margin: 0 auto 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.8rem;
+    border-radius: 22px;
+    margin: 0 auto 1.2rem;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.2rem;
+    position: relative;
+    border: 1px solid rgba(0,0,0,0.03);
 }
+
+.orbit-anim {
+    position: absolute;
+    width: 100%; height: 100%;
+    border: 2px dashed rgba(255, 193, 7, 0.2);
+    border-radius: 22px;
+    animation: rotateTech 12s linear infinite;
+}
+
+@keyframes rotateTech { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+.cat-id-tag { font-size: 0.6rem; color: #bbb; font-weight: 700; letter-spacing: 1px; display: block; }
+.cat-name-modern { color: #222; font-weight: 800; font-size: 0.95rem; margin-top: 5px; }
+
+.hover-indicator-gold {
+    position: absolute; bottom: 0; left: 0; width: 0; height: 4px; background: #ffc107; transition: 0.4s;
+}
+
+.cat-card-modern:hover .hover-indicator-gold { width: 100%; }
 
 /* --- ANIMACIONES --- */
 .floating { animation: floatAnim 6s ease-in-out infinite; }
-@keyframes floatAnim {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-20px); }
-}
+@keyframes floatAnim { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
 
 /* --- RESPONSIVE --- */
 @media (max-width: 768px) {
     .gk-hero-card { height: 450px; }
-    .gk-title { font-size: 2rem; }
-    .text-glass { padding: 2rem 1rem; }
+    .gk-title-display { font-size: 2.2rem; }
+    .text-glass-tech { padding: 2rem 1.5rem; border-radius: 30px; }
 }
+

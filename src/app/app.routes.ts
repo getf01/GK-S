@@ -9,10 +9,14 @@ export const routes: Routes = [
     { 
       path: 'admin', 
       component: AdminComponent, 
-      canActivate: [authGuard] // <--- El candado está puesto aquí
+      canActivate: [authGuard] 
     },
     { path: 'login', component: LoginComponent },
-    { path: 'categoria/:nombreCat', component: ProductosComponent }, // Para ver productos de una categoría
-    { path: '', redirectTo: 'home', pathMatch: 'full' }, // Si está vacío, va al home
-    { path: '**', redirectTo: 'home' } // Si escribe cualquier cosa mal, va al home
+    
+    // --- ESTAS DOS SON LA CLAVE ---
+    { path: 'productos', component: ProductosComponent }, // <--- AÑADE ESTA (Para el buscador)
+    { path: 'categoria/:nombreCat', component: ProductosComponent }, // Para categorías del home
+    
+    { path: '', redirectTo: 'home', pathMatch: 'full' },
+    { path: '**', redirectTo: 'home' }
 ];

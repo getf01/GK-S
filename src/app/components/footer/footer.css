@@ -1,0 +1,40 @@
+.footer-tech {
+    background-color: #0d0d0d; /* El mismo color del body */
+    border-top: 1px solid rgba(255, 193, 7, 0.2); /* Línea amarilla tenue */
+    color: #b0b0b0;
+}
+
+.brand-glow {
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(255, 191, 0, 0.4);
+}
+
+.footer-link {
+    color: #b0b0b0 !important;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.footer-link:hover {
+    color: #ffc107 !important;
+    padding-left: 5px; /* Pequeño efecto de empuje al pasar el mouse */
+}
+
+.line-glow {
+    background: linear-gradient(90deg, transparent, rgba(255, 193, 7, 0.5), transparent);
+    height: 1px;
+    border: none;
+    opacity: 1;
+}
+
+.social-icons a {
+    color: #ffc107;
+    font-size: 1.2rem;
+    transition: 0.3s;
+}
+
+.social-icons a:hover {
+    color: white;
+    filter: drop-shadow(0 0 5px #ffc107);
+}

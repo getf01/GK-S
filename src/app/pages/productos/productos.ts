@@ -20,18 +20,33 @@ export class ProductosComponent {
 
   private todosLosProductos = toSignal(this._productosService.getProductos(), { initialValue: [] });
 
+  // Capturamos también los queryParams (donde viaja la 'q')
+  private queryParams = toSignal(this.route.queryParams);
+
+
   public productos = computed(() => {
-    const lista = this.todosLosProductos();
-    
-    // Prioridad 1: Lo que diga la URL (categoria/:nombreCat)
-    // Prioridad 2: Lo que diga el Signal global
-    const nombreDesdeUrl = this.parametroUrl()?.['nombreCat'];
-    const filtro = nombreDesdeUrl || this._productosService.categoriaSeleccionada();
-
-    if (!filtro) return lista;
-
+  const lista = this.todosLosProductos();
+  const nombreDesdeUrl = this.parametroUrl()?.['nombreCat'];
+  const busqueda = this.queryParams()?.['q']; 
+  
+  // Si hay búsqueda en el buscador del NAV (el parámetro 'q')
+  if (busqueda) {
+    const q = busqueda.toLowerCase().trim();
     return lista.filter(p => 
-      p.categoria.toLowerCase().trim() === filtro.toLowerCase().trim()
+      p.nombre.toLowerCase().includes(q) || 
+      p.descripcion?.toLowerCase().includes(q)
     );
-  });
+  } 
+
+  // Si NO hay búsqueda, pero el usuario entró por una Categoría
+  const filtroCat = nombreDesdeUrl || this._productosService.categoriaSeleccionada();
+  if (filtroCat) {
+    return lista.filter(p => 
+      p.categoria.toLowerCase().trim() === filtroCat.toLowerCase().trim()
+    );
+  }
+
+  // Si no hay nada, mostramos todo
+  return lista;
+});
 }

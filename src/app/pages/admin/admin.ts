@@ -35,7 +35,7 @@ export class AdminComponent {
     ), { initialValue: [] }
   );
 
-  nuevoProducto: Producto = { nombre: '', precio: 0, categoria: '', imagen: '', stock: 0 };
+  nuevoProducto: Producto = { nombre: '', precio: 0, categoria: '', imagen: '', stock: 0, descripcion: '' };
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
@@ -101,7 +101,7 @@ export class AdminComponent {
   }
 
   limpiarFormulario() {
-    this.nuevoProducto = { nombre: '', precio: 0, categoria: '', imagen: '', stock: 0 };
+    this.nuevoProducto = { nombre: '', precio: 0, categoria: '', imagen: '', stock: 0, descripcion: ''   };
     this.archivoSeleccionado = null;
     this.editandoId.set(null);
   }
